@@ -21,5 +21,12 @@ Zmiana stopnia nawadniania: (0 .. 10)
 ![Image](screens/Zmiana%20stopnia%20nawadniania.png)
 ![Image](screens/Zmiana%20stopnia%20nawadniania%20-%20wynik.png)
 
+## Reguły
+W kontrolerze znajdują się 64 reguły. Są one pogrupowane w 16 wierszy oraz w 4 wiersze.
+Grupy 16 wierszowe ustalają reguły w zależności od konkretnego stopnia wilgotności.
+Grupy 4 wierszowe ustalają reguły w zależności od konkretnej kategorii temperatury.
+Kontroler został napisany tak, że im większa wilgotność tym mniejsze powinno być nawadnianie ora im wyższa
+temeratura tym większe powinno być nawadnianie.
+
 ## Przykład
 `java WateringFuzzy watering_controller.fcl 3 25 50`
