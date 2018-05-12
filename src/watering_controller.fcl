@@ -1,0 +1,134 @@
+FUNCTION_BLOCK
+
+VAR_INPUT
+stopien_nawadniania : REAL;
+temperatura : REAL;
+wilgotnosc : REAL;
+END_VAR
+
+VAR_OUTPUT
+zmiana_stopien_nawadniania : REAL;
+END_VAR
+
+FUZZIFY stopien_nawadniania
+TERM bardzoMaly := (0, 1) (1, 1) (2, 0.50) (3, 0);
+TERM maly := (1, 0) (2, 0.50) (3, 1) (4, 1) (5, 0.50) (6, 0);
+TERM duzy := (4, 0) (5, 0.50) (6, 1) (7, 1) (8, 0.50) (9, 0);
+TERM bardzoDuzy := (7, 0) (8, 0.50) (9, 1) (10, 1);
+END_FUZZIFY
+
+FUZZIFY temperatura
+TERM bardzoZimno := (0, 1) (2.5, 0.50) (5, 0);
+TERM zimno := (0, 0) (5, 0.50) (10, 1) (15, 1) (20, 0.50) (25, 0);
+TERM cieplo := (15, 0) (20, 0.50) (25, 1) (30, 1) (35, 0.50) (40, 0);
+TERM bardzoCieplo := (30, 0) (35, 0.50) (40, 1) (50, 1);
+END_FUZZIFY
+
+FUZZIFY wilgotnosc
+TERM bardzoSucho := (0, 1) (10, 1) (20, 0.50) (30, 0);
+TERM sucho := (10, 0) (20, 0.50) (30, 1) (40, 1) (50, 0.50) (60, 0);
+TERM wilgotno := (40, 0) (50, 0.50) (60, 1) (70, 1) (80, 0.50) (90, 0);
+TERM bardzoWilgotno := (70, 0) (80, 0.50) (90, 1) (100, 1);
+END_FUZZIFY
+
+DEFUZZIFY zmiana_stopien_nawadniania
+TERM zmniejsz := (0, 1) (20, 1) (30, 0.50) (40, 0) (70, 0);
+TERM zostaw := (20, 0) (30, 0.50) (40, 1) (60, 1) (70, 0.50) (80, 0);
+TERM zwieksz := (30, 0) (60, 0) (70, 0.50) (80, 1) (100, 1);
+METHOD : COG;
+DEFAULT := 0;
+END_DEFUZZIFY
+
+RULEBLOCK first
+AND: MIN;
+ACT: MIN;
+
+RULE 0: IF stopien_nawadniania IS bardzoMaly AND temperatura IS bardzoZimno AND wilgotnosc IS bardzoSucho THEN zmiana_stopien_nawadniania IS zostaw;
+RULE 1: IF stopien_nawadniania IS maly AND temperatura IS bardzoZimno AND wilgotnosc IS bardzoSucho THEN zmiana_stopien_nawadniania IS zmniejsz;
+RULE 2: IF stopien_nawadniania IS duzy AND temperatura IS bardzoZimno AND wilgotnosc IS bardzoSucho THEN zmiana_stopien_nawadniania IS zmniejsz;
+RULE 3: IF stopien_nawadniania IS bardzoDuzy AND temperatura IS bardzoZimno AND wilgotnosc IS bardzoSucho THEN zmiana_stopien_nawadniania IS zmniejsz;
+
+RULE 4: IF stopien_nawadniania IS bardzoMaly AND temperatura IS zimno AND wilgotnosc IS bardzoSucho THEN zmiana_stopien_nawadniania IS zwieksz;
+RULE 5: IF stopien_nawadniania IS maly AND temperatura IS zimno AND wilgotnosc IS bardzoSucho THEN zmiana_stopien_nawadniania IS zostaw;
+RULE 6: IF stopien_nawadniania IS duzy AND temperatura IS zimno AND wilgotnosc IS bardzoSucho THEN zmiana_stopien_nawadniania IS zmniejsz;
+RULE 7: IF stopien_nawadniania IS bardzoDuzy AND temperatura IS zimno AND wilgotnosc IS bardzoSucho THEN zmiana_stopien_nawadniania IS zmniejsz;
+
+RULE 8: IF stopien_nawadniania IS bardzoMaly AND temperatura IS cieplo AND wilgotnosc IS bardzoSucho THEN zmiana_stopien_nawadniania IS zwieksz;
+RULE 9: IF stopien_nawadniania IS maly AND temperatura IS cieplo AND wilgotnosc IS bardzoSucho THEN zmiana_stopien_nawadniania IS zwieksz;
+RULE 10: IF stopien_nawadniania IS duzy AND temperatura IS cieplo AND wilgotnosc IS bardzoSucho THEN zmiana_stopien_nawadniania IS zostaw;
+RULE 11: IF stopien_nawadniania IS bardzoDuzy AND temperatura IS cieplo AND wilgotnosc IS bardzoSucho THEN zmiana_stopien_nawadniania IS zmniejsz;
+
+RULE 12: IF stopien_nawadniania IS bardzoMaly AND temperatura IS bardzoCieplo AND wilgotnosc IS bardzoSucho THEN zmiana_stopien_nawadniania IS zwieksz;
+RULE 13: IF stopien_nawadniania IS maly AND temperatura IS bardzoCieplo AND wilgotnosc IS bardzoSucho THEN zmiana_stopien_nawadniania IS zwieksz;
+RULE 14: IF stopien_nawadniania IS duzy AND temperatura IS bardzoCieplo AND wilgotnosc IS bardzoSucho THEN zmiana_stopien_nawadniania IS zwieksz;
+RULE 15: IF stopien_nawadniania IS bardzoDuzy AND temperatura IS bardzoCieplo AND wilgotnosc IS bardzoSucho THEN zmiana_stopien_nawadniania IS zostaw;
+
+
+
+RULE 16: IF stopien_nawadniania IS bardzoMaly AND temperatura IS bardzoZimno AND wilgotnosc IS sucho THEN zmiana_stopien_nawadniania IS zostaw;
+RULE 17: IF stopien_nawadniania IS maly AND temperatura IS bardzoZimno AND wilgotnosc IS sucho THEN zmiana_stopien_nawadniania IS zmniejsz;
+RULE 18: IF stopien_nawadniania IS duzy AND temperatura IS bardzoZimno AND wilgotnosc IS sucho THEN zmiana_stopien_nawadniania IS zmniejsz;
+RULE 19: IF stopien_nawadniania IS bardzoDuzy AND temperatura IS bardzoZimno AND wilgotnosc IS sucho THEN zmiana_stopien_nawadniania IS zmniejsz;
+
+RULE 20: IF stopien_nawadniania IS bardzoMaly AND temperatura IS zimno AND wilgotnosc IS sucho THEN zmiana_stopien_nawadniania IS zwieksz;
+RULE 21: IF stopien_nawadniania IS maly AND temperatura IS zimno AND wilgotnosc IS sucho THEN zmiana_stopien_nawadniania IS zostaw;
+RULE 22: IF stopien_nawadniania IS duzy AND temperatura IS zimno AND wilgotnosc IS sucho THEN zmiana_stopien_nawadniania IS zmniejsz;
+RULE 23: IF stopien_nawadniania IS bardzoDuzy AND temperatura IS zimno AND wilgotnosc IS sucho THEN zmiana_stopien_nawadniania IS zmniejsz;
+
+RULE 24: IF stopien_nawadniania IS bardzoMaly AND temperatura IS cieplo AND wilgotnosc IS sucho THEN zmiana_stopien_nawadniania IS zwieksz;
+RULE 25: IF stopien_nawadniania IS maly AND temperatura IS cieplo AND wilgotnosc IS sucho THEN zmiana_stopien_nawadniania IS zwieksz;
+RULE 26: IF stopien_nawadniania IS duzy AND temperatura IS cieplo AND wilgotnosc IS sucho THEN zmiana_stopien_nawadniania IS zostaw;
+RULE 27: IF stopien_nawadniania IS bardzoDuzy AND temperatura IS cieplo AND wilgotnosc IS sucho THEN zmiana_stopien_nawadniania IS zmniejsz;
+
+RULE 28: IF stopien_nawadniania IS bardzoMaly AND temperatura IS bardzoCieplo AND wilgotnosc IS sucho THEN zmiana_stopien_nawadniania IS zwieksz;
+RULE 29: IF stopien_nawadniania IS maly AND temperatura IS bardzoCieplo AND wilgotnosc IS sucho THEN zmiana_stopien_nawadniania IS zwieksz;
+RULE 30: IF stopien_nawadniania IS duzy AND temperatura IS bardzoCieplo AND wilgotnosc IS sucho THEN zmiana_stopien_nawadniania IS zwieksz;
+RULE 31: IF stopien_nawadniania IS bardzoDuzy AND temperatura IS bardzoCieplo AND wilgotnosc IS sucho THEN zmiana_stopien_nawadniania IS zostaw;
+
+
+
+RULE 32: IF stopien_nawadniania IS bardzoMaly AND temperatura IS bardzoZimno AND wilgotnosc IS wilgotno THEN zmiana_stopien_nawadniania IS zostaw;
+RULE 33: IF stopien_nawadniania IS maly AND temperatura IS bardzoZimno AND wilgotnosc IS wilgotno THEN zmiana_stopien_nawadniania IS zmniejsz;
+RULE 34: IF stopien_nawadniania IS duzy AND temperatura IS bardzoZimno AND wilgotnosc IS wilgotno THEN zmiana_stopien_nawadniania IS zmniejsz;
+RULE 35: IF stopien_nawadniania IS bardzoDuzy AND temperatura IS bardzoZimno AND wilgotnosc IS wilgotno THEN zmiana_stopien_nawadniania IS zmniejsz;
+
+RULE 36: IF stopien_nawadniania IS bardzoMaly AND temperatura IS zimno AND wilgotnosc IS wilgotno THEN zmiana_stopien_nawadniania IS zostaw;
+RULE 37: IF stopien_nawadniania IS maly AND temperatura IS zimno AND wilgotnosc IS wilgotno THEN zmiana_stopien_nawadniania IS zmniejsz;
+RULE 38: IF stopien_nawadniania IS duzy AND temperatura IS zimno AND wilgotnosc IS wilgotno THEN zmiana_stopien_nawadniania IS zmniejsz;
+RULE 39: IF stopien_nawadniania IS bardzoDuzy AND temperatura IS zimno AND wilgotnosc IS wilgotno THEN zmiana_stopien_nawadniania IS zmniejsz;
+
+RULE 40: IF stopien_nawadniania IS bardzoMaly AND temperatura IS cieplo AND wilgotnosc IS wilgotno THEN zmiana_stopien_nawadniania IS zwieksz;
+RULE 41: IF stopien_nawadniania IS maly AND temperatura IS cieplo AND wilgotnosc IS wilgotno THEN zmiana_stopien_nawadniania IS zostaw;
+RULE 42: IF stopien_nawadniania IS duzy AND temperatura IS cieplo AND wilgotnosc IS wilgotno THEN zmiana_stopien_nawadniania IS zmniejsz;
+RULE 43: IF stopien_nawadniania IS bardzoDuzy AND temperatura IS cieplo AND wilgotnosc IS wilgotno THEN zmiana_stopien_nawadniania IS zmniejsz;
+
+RULE 44: IF stopien_nawadniania IS bardzoMaly AND temperatura IS bardzoCieplo AND wilgotnosc IS wilgotno THEN zmiana_stopien_nawadniania IS zwieksz;
+RULE 45: IF stopien_nawadniania IS maly AND temperatura IS bardzoCieplo AND wilgotnosc IS wilgotno THEN zmiana_stopien_nawadniania IS zwieksz;
+RULE 46: IF stopien_nawadniania IS duzy AND temperatura IS bardzoCieplo AND wilgotnosc IS wilgotno THEN zmiana_stopien_nawadniania IS zostaw;
+RULE 47: IF stopien_nawadniania IS bardzoDuzy AND temperatura IS bardzoCieplo AND wilgotnosc IS wilgotno THEN zmiana_stopien_nawadniania IS zmniejsz;
+
+
+
+RULE 48: IF stopien_nawadniania IS bardzoMaly AND temperatura IS bardzoZimno AND wilgotnosc IS bardzoWilgotno THEN zmiana_stopien_nawadniania IS zostaw;
+RULE 49: IF stopien_nawadniania IS maly AND temperatura IS bardzoZimno AND wilgotnosc IS bardzoWilgotno THEN zmiana_stopien_nawadniania IS zmniejsz;
+RULE 50: IF stopien_nawadniania IS duzy AND temperatura IS bardzoZimno AND wilgotnosc IS bardzoWilgotno THEN zmiana_stopien_nawadniania IS zmniejsz;
+RULE 51: IF stopien_nawadniania IS bardzoDuzy AND temperatura IS bardzoZimno AND wilgotnosc IS bardzoWilgotno THEN zmiana_stopien_nawadniania IS zmniejsz;
+
+RULE 52: IF stopien_nawadniania IS bardzoMaly AND temperatura IS zimno AND wilgotnosc IS bardzoWilgotno THEN zmiana_stopien_nawadniania IS zostaw;
+RULE 53: IF stopien_nawadniania IS maly AND temperatura IS zimno AND wilgotnosc IS bardzoWilgotno THEN zmiana_stopien_nawadniania IS zmniejsz;
+RULE 54: IF stopien_nawadniania IS duzy AND temperatura IS zimno AND wilgotnosc IS bardzoWilgotno THEN zmiana_stopien_nawadniania IS zmniejsz;
+RULE 55: IF stopien_nawadniania IS bardzoDuzy AND temperatura IS zimno AND wilgotnosc IS bardzoWilgotno THEN zmiana_stopien_nawadniania IS zmniejsz;
+
+RULE 56: IF stopien_nawadniania IS bardzoMaly AND temperatura IS cieplo AND wilgotnosc IS bardzoWilgotno THEN zmiana_stopien_nawadniania IS zwieksz;
+RULE 57: IF stopien_nawadniania IS maly AND temperatura IS cieplo AND wilgotnosc IS bardzoWilgotno THEN zmiana_stopien_nawadniania IS zostaw;
+RULE 58: IF stopien_nawadniania IS duzy AND temperatura IS cieplo AND wilgotnosc IS bardzoWilgotno THEN zmiana_stopien_nawadniania IS zmniejsz;
+RULE 59: IF stopien_nawadniania IS bardzoDuzy AND temperatura IS cieplo AND wilgotnosc IS bardzoWilgotno THEN zmiana_stopien_nawadniania IS zmniejsz;
+
+RULE 60: IF stopien_nawadniania IS bardzoMaly AND temperatura IS bardzoCieplo AND wilgotnosc IS bardzoWilgotno THEN zmiana_stopien_nawadniania IS zwieksz;
+RULE 61: IF stopien_nawadniania IS maly AND temperatura IS bardzoCieplo AND wilgotnosc IS bardzoWilgotno THEN zmiana_stopien_nawadniania IS zwieksz;
+RULE 62: IF stopien_nawadniania IS duzy AND temperatura IS bardzoCieplo AND wilgotnosc IS bardzoWilgotno THEN zmiana_stopien_nawadniania IS zostaw;
+RULE 63: IF stopien_nawadniania IS bardzoDuzy AND temperatura IS bardzoCieplo AND wilgotnosc IS bardzoWilgotno THEN zmiana_stopien_nawadniania IS zmniejsz;
+
+END_RULEBLOCK
+
+END_FUNCTION_BLOCK
