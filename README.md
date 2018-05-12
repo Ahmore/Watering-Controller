@@ -7,13 +7,13 @@ zostać zmieniony stopień nawadniania w danych warunkach.
 `java WateringFuzzy <plik_fcl> <stopien nawadniania> <temperatura> <wilgotnosc>`
 
 ## Wejście
-Stopień nawadniania: (0 .. 10)
+Stopień nawadniania: (0 .. 10)  
 ![Image](screens/Stopien%20nawadniania.png)
 
-Temperatura: (0 .. 50)
+Temperatura: (0 .. 50)  
 ![Image](screens/Temperatura.png)
 
-Wilgotność: (0 .. 100)
+Wilgotność: (0 .. 100)  
 ![Image](screens/Wilgotnosc.png)
 
 ## Wyjście
