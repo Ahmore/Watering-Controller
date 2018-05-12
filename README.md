@@ -30,3 +30,6 @@ temeratura tym większe powinno być nawadnianie.
 
 ## Przykład
 `java WateringFuzzy watering_controller.fcl 3 25 50`
+
+## Repozytorium
+[GitHub](https://github.com/Ahmore/Watering-Controller)
